@@ -1,112 +1,158 @@
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import CustomBottomNav from '../../components/CustomBottomNav';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+export default function ExploreScreen() {
+  const insets = useSafeAreaInsets();
 
-export default function TabTwoScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
+    <View className="flex-1 bg-white relative">
+      {/* Map Background Layer */}
+      <View className="absolute inset-0 z-0">
         <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
+          source={{ uri: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' }}
+          style={{ width: '100%', height: '100%', opacity: 0.6 }}
+          contentFit="cover"
         />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+        <View className="absolute inset-0 bg-indigo-50/10" />
+      </View>
+
+      {/* Top Floating Search & Filters */}
+      <LinearGradient
+        colors={['rgba(255,255,255,0.9)', 'rgba(255,255,255,0.5)', 'transparent']}
+        className="absolute top-0 left-0 w-full z-20 px-6 pb-4"
+        style={{ paddingTop: insets.top + 10 }}
+      >
+        {/* Search Bar */}
+        <View className="flex-row gap-3 mb-4">
+          <View className="flex-1 relative shadow-lg shadow-slate-200/50 rounded-2xl">
+            <Ionicons name="search-outline" size={20} color="#0f172a" style={{ position: 'absolute', left: 16, top: 12, zIndex: 10 }} />
+            <TextInput
+              value="San Francisco, CA"
+              className="w-full bg-white border border-white text-sm font-semibold rounded-2xl py-3.5 pl-11 pr-4 text-slate-900 shadow-sm"
+            />
+          </View>
+          <TouchableOpacity className="w-12 h-[46px] bg-white rounded-2xl items-center justify-center shadow-lg shadow-slate-200/50 border border-white active:scale-95">
+            <Ionicons name="options-outline" size={22} color="#0f172a" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Horizontal Filter Chips */}
+        <View className="flex-row gap-2">
+          <TouchableOpacity className="px-4 py-2 bg-slate-900 rounded-full shadow-md">
+            <Text className="text-white text-xs font-medium">Any Price</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="px-4 py-2 bg-white rounded-full shadow-md flex-row items-center gap-1">
+            <Ionicons name="home-outline" size={14} color="#475569" />
+            <Text className="text-slate-600 text-xs font-medium">House</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="px-4 py-2 bg-white rounded-full shadow-md flex-row items-center gap-1">
+            <Ionicons name="bed-outline" size={14} color="#475569" />
+            <Text className="text-slate-600 text-xs font-medium">2+ Beds</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+
+      {/* Map Pins Layer */}
+      <View className="absolute inset-0 z-10 pointer-events-none">
+        {/* Pin 1: Inactive */}
+        <TouchableOpacity className="absolute top-[30%] left-[20%] bg-white border border-slate-100 px-3 py-1.5 rounded-full shadow-lg">
+          <Text className="text-xs font-bold tracking-tight text-slate-900">$850k</Text>
+        </TouchableOpacity>
+
+        {/* Pin 2: Active (Selected) */}
+        <TouchableOpacity className="absolute top-[42%] left-[45%] z-20 items-center justify-center">
+          <View className="bg-slate-900 px-3.5 py-2 rounded-full shadow-xl shadow-slate-900/40 transform scale-110">
+            <Text className="text-xs font-bold tracking-tight text-white">$2.4k</Text>
+          </View>
+          <View className="w-2 h-2 bg-slate-900 transform rotate-45 -mt-1" />
+        </TouchableOpacity>
+
+        {/* Pin 3: Inactive */}
+        <TouchableOpacity className="absolute top-[35%] right-[15%] bg-white border border-slate-100 px-3 py-1.5 rounded-full shadow-lg">
+          <Text className="text-xs font-bold tracking-tight text-slate-900">$1.2M</Text>
+        </TouchableOpacity>
+
+        {/* Pin 4: Inactive */}
+        <TouchableOpacity className="absolute bottom-[40%] left-[15%] bg-white border border-slate-100 px-3 py-1.5 rounded-full shadow-lg">
+          <Text className="text-xs font-bold tracking-tight text-slate-900">$3.1k</Text>
+        </TouchableOpacity>
+
+        {/* Pin 5: Inactive */}
+        <TouchableOpacity className="absolute bottom-[45%] right-[25%] bg-white border border-slate-100 px-3 py-1.5 rounded-full shadow-lg">
+          <Text className="text-xs font-bold tracking-tight text-slate-900">$4.5k</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Floating Action Button (List View) */}
+      <TouchableOpacity
+        className="absolute right-6 z-20 bg-white w-12 h-12 rounded-full shadow-xl items-center justify-center border border-slate-100 active:scale-95"
+        style={{ bottom: 130 + insets.bottom }}
+      >
+        <Ionicons name="list-outline" size={24} color="#0f172a" />
+      </TouchableOpacity>
+
+      {/* Bottom Property Card (Selected Pin) */}
+      <View className="absolute left-4 right-4 z-20" style={{ bottom: 90 + insets.bottom }}>
+        <View className="bg-white p-3 rounded-3xl shadow-2xl shadow-slate-900/10 border border-slate-100 flex-row gap-3">
+          {/* Image */}
+          <View className="w-24 h-24 rounded-2xl bg-gray-100 overflow-hidden relative">
+            <Image
+              source={{ uri: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}
+              style={{ width: '100%', height: '100%' }}
+              contentFit="cover"
+            />
+            <TouchableOpacity className="absolute top-2 right-2">
+              <Ionicons name="heart-outline" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Content */}
+          <View className="flex-1 justify-center py-1">
+            <View className="flex-row justify-between items-start mb-1">
+              <Text className="text-sm font-semibold text-slate-900 tracking-tight">Modern Loft Studio</Text>
+              <View className="flex-row items-center gap-1 bg-yellow-50 px-1.5 py-0.5 rounded-md">
+                <Ionicons name="star" size={10} color="#eab308" />
+                <Text className="text-xs text-yellow-500 font-medium">4.8</Text>
+              </View>
+            </View>
+            <Text className="text-xs text-slate-400 font-medium mb-3" numberOfLines={1}>1024 Market St, San Francisco</Text>
+
+            <View className="flex-row items-center justify-between">
+              <View className="flex-row items-center gap-3">
+                <View className="flex-row items-center gap-1">
+                  <Ionicons name="bed-outline" size={12} color="#64748b" />
+                  <Text className="text-[10px] font-medium text-slate-500">1</Text>
+                </View>
+                <View className="flex-row items-center gap-1">
+                  <MaterialCommunityIcons name="shower" size={12} color="#64748b" />
+                  <Text className="text-[10px] font-medium text-slate-500">1</Text>
+                </View>
+                <View className="flex-row items-center gap-1">
+                  <MaterialCommunityIcons name="vector-square" size={12} color="#64748b" />
+                  <Text className="text-[10px] font-medium text-slate-500">650</Text>
+                </View>
+              </View>
+              <View>
+                <Text className="text-sm font-bold text-indigo-600 tracking-tight">$2,400</Text>
+                <Text className="text-[10px] text-slate-400 text-right">/mo</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <CustomBottomNav activeTab="explore" />
+
+      {/* Subtle fade overlay at bottom */}
+      <LinearGradient
+        colors={['transparent', 'rgba(255,255,255,0.8)']}
+        className="absolute bottom-[80px] left-0 w-full h-8 pointer-events-none z-10"
+      />
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});
